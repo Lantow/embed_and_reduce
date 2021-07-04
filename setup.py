@@ -13,7 +13,11 @@ setup(
     packages=['embed_and_reduce'],
     platforms='any',
     install_requires=[
-        'flask',
+        "danlp==0.0.12",
+        "psycopg2_binary==2.8.6",
+        "allennlp==1.3.0",
+        "gensim==4.0.1",
+        "python_dotenv==0.17.1"
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
