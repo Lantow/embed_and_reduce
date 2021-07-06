@@ -38,7 +38,7 @@ class CleanAndEmb(object):
         clean_sentences = self.clean_sents(tokens)
         return self.embed_text(clean_sentences)
 
-    def tokenize_raw_text_data(self, search_string):
+    def tokenize_raw_text_data(self, search_string: str):
         if not hasattr(self, "tokenizer"): 
             self.tokenizer = self.load_tokenizer()
         try:
@@ -94,12 +94,13 @@ class EmbAndReduce(CleanAndEmb, ReduceDim):
         embedding = self.clean_and_embed(search_string)
         return self.reduce_dim(embedding)
     
+if __name__ == '__main__':
+    search_string = """ De beløb, der refunderes af udligningsordningen, omfatter momsbetalinger fra 
+                    (amts)kommunerne og Hovedstadens Sygehusfællesskab i forbindelse med køb af varer 
+                    og tjenesteydelser, der bogføres på hovedkontiene 0-6, bortset fra momsbetalinger, 
+                    der kan fradrages som indgående moms i et momsregnskab. Stk. 2. Beløbene efter stk. 
+                    1 bestemmes som summen af følgende udgifter til moms (1+2): """
 
-search_string = """ De beløb, der refunderes af udligningsordningen, omfatter momsbetalinger fra 
-                  (amts)kommunerne og Hovedstadens Sygehusfællesskab i forbindelse med køb af varer 
-                  og tjenesteydelser, der bogføres på hovedkontiene 0-6, bortset fra momsbetalinger, 
-                  der kan fradrages som indgående moms i et momsregnskab. Stk. 2. Beløbene efter stk. 
-                  1 bestemmes som summen af følgende udgifter til moms (1+2): """
-
-instance = EmbAndReduce()
-instance.embed_and_reduce(search_string)
+    instance = EmbAndReduce()
+    embedding_dim100 = instance.embed_and_reduce(search_string)
+    print(embedding_dim100)
