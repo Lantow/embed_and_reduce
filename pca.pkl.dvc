@@ -1,0 +1,4 @@
+outs:
+- md5: 231f28d65f9f426b095d26a7449a44c0
+  size: 623788
+  path: pca.pkl
