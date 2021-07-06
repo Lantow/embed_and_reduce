@@ -2,17 +2,20 @@ from danlp.models import load_bert_base_model
 import numpy as np
 import nltk
 import re
+import pickle
+import glob
+from pathlib import Path
 
 
 class ReduceDim(object):
+
+    root = glob.glob(Path(".").resolve().parent.as_posix())[0]
+
+    with open(root + "/pca.pkl", "rb") as f:
+        pca = pickle.load(f)
     
-    def __init__(self, embedding):
-        self.embedding = embedding
-    
-    def reduce_dim(self):
-        with open("pca.pkl", "rb") as f:
-            pca = pickle.load(f)
-        self.emb100 = pca.transform(self.embedding.reshape(1,-1))[0]
+    def reduce_dim(self, embedding):
+        return self.pca.transform(embedding.reshape(1,-1))[0]
 
 
 class CleanAndEmb(object):
@@ -86,7 +89,10 @@ class CleanAndEmb(object):
                 raise E
     
 class EmbAndReduce(CleanAndEmb, ReduceDim):
-    pass
+
+    def embed_and_reduce(self, search_string):
+        embedding = self.clean_and_embed(search_string)
+        return self.reduce_dim(embedding)
     
 
 search_string = """ De beløb, der refunderes af udligningsordningen, omfatter momsbetalinger fra 
@@ -95,5 +101,5 @@ search_string = """ De beløb, der refunderes af udligningsordningen, omfatter m
                   der kan fradrages som indgående moms i et momsregnskab. Stk. 2. Beløbene efter stk. 
                   1 bestemmes som summen af følgende udgifter til moms (1+2): """
 
-CAE = CleanAndEmb()
-enbedding = CAE.clean_and_embed(search_string)
+instance = EmbAndReduce()
+instance.embed_and_reduce(search_string)
