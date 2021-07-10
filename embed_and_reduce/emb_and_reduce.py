@@ -15,19 +15,19 @@ class ReduceDim(object):
         self.emb100 = pca.transform(self.embedding.reshape(1,-1))[0]
 
 
-class CleanAndEmb(object):
+class Tokenize(object):
     
     def __init__(self, search_string):
-        self.search_string = search_string
-
+        self.search_string
+        
     def load_tokenizer(self):
         try:
-            self.tokenizer = nltk.data.load("tokenizers/punkt/danish.pickle")
-        except LookupError:
-            nltk.download('punkt')
-            self.tokenizer = nltk.data.load("tokenizers/punkt/danish.pickle")
-        except Exception as E:
-            raise E
+        self.tokenizer = nltk.data.load("tokenizers/punkt/danish.pickle")
+    except LookupError:
+        nltk.download('punkt')
+        self.tokenizer = nltk.data.load("tokenizers/punkt/danish.pickle")
+    except Exception as E:
+        raise E
 
     def tokenize_raw_text_data(self):
         if not hasattr(self, "tokenizer"): self.load_tokenizer()
@@ -35,6 +35,12 @@ class CleanAndEmb(object):
             self.tokenized_str = self.tokenizer.tokenize(self.search_string)
         except Exception as E:
             raise E
+        
+
+class CleanAndEmb(Tokenize):
+    
+    def __init__(self, search_string):
+        self.search_string = search_string
 
     def clean_sents(self):
         # For now we only remove \r and \n, as we might remove context useable by the BERT model
