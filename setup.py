@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name = 'embed_and_reduce',
-    version='1.0',
+    version='1.1',
     license='Creative Commons Legal Code',
     author='Morten Lantow',
     author_email='MrLantow@Gmail.com',

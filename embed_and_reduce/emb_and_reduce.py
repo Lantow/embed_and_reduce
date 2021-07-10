@@ -5,25 +5,25 @@ import re
 import pickle
 import glob
 from pathlib import Path
-
+import os
 
 class ReduceDim(object):
 
-    root = glob.glob(Path(".").resolve().parent.as_posix())[0]
-
-    with open(root + "/pca.pkl", "rb") as f:
-        pca = pickle.load(f)
-    
     def reduce_dim(self, embedding):
         return self.pca.transform(embedding.reshape(1,-1))[0]
 
 
 class CleanAndEmb(object):
 
-    def __init__(self):
+    def __init__(self, pca_path):
         self.model = load_bert_base_model()
         self.tokenizer = self.load_tokenizer()
+        self.pca = self._load_pca_pickle(pca_path)
         
+    def _load_pca_pickle(self, pca_path):
+        with open(pca_path, "rb") as f:
+            return pickle.load(f)
+
     def load_tokenizer(self):
         try:
             return nltk.data.load("tokenizers/punkt/danish.pickle")
@@ -100,7 +100,7 @@ if __name__ == '__main__':
                     og tjenesteydelser, der bogføres på hovedkontiene 0-6, bortset fra momsbetalinger, 
                     der kan fradrages som indgående moms i et momsregnskab. Stk. 2. Beløbene efter stk. 
                     1 bestemmes som summen af følgende udgifter til moms (1+2): """
-
-    instance = EmbAndReduce()
+    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+    instance = EmbAndReduce(Path(ROOT_DIR).parent / "pca.pkl")
     embedding_dim100 = instance.embed_and_reduce(search_string)
     print(embedding_dim100)
