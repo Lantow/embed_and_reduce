@@ -13,8 +13,10 @@ setup(
     packages=['embed_and_reduce'],
     platforms='any',
     install_requires=[
-        "gensim==4.0.1",
-        "python_dotenv==0.17.1"
+        "transformers==4.8.2",
+        "scikit-learn==0.24.2",
+        "nltk==3.6.2",
+        "torch==1.9.0",
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
