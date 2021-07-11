@@ -1,11 +1,10 @@
-from danlp.models import load_bert_base_model
 import numpy as np
 import nltk
 import re
 import pickle
-import glob
 from pathlib import Path
 import os
+from bert import BertBase
 
 class ReduceDim(object):
 
@@ -15,8 +14,8 @@ class ReduceDim(object):
 
 class CleanAndEmb(object):
 
-    def __init__(self, pca_path):
-        self.model = load_bert_base_model()
+    def __init__(self, pca_path, model_path):
+        self.model = BertBase(model_path)
         self.tokenizer = self.load_tokenizer()
         self.pca = self._load_pca_pickle(pca_path)
         
@@ -101,6 +100,6 @@ if __name__ == '__main__':
                     der kan fradrages som indgående moms i et momsregnskab. Stk. 2. Beløbene efter stk. 
                     1 bestemmes som summen af følgende udgifter til moms (1+2): """
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-    instance = EmbAndReduce(Path(ROOT_DIR).parent / "pca.pkl")
+    instance = EmbAndReduce(Path(ROOT_DIR).parent / "pca.pkl", model_path=Path.home() / "bert")
     embedding_dim100 = instance.embed_and_reduce(search_string)
     print(embedding_dim100)
