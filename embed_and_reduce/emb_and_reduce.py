@@ -4,7 +4,7 @@ import re
 import pickle
 from pathlib import Path
 import os
-from bert import BertBase
+from embed_and_reduce.bert import BertBase
 
 class ReduceDim(object):
 
