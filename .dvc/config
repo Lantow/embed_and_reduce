@@ -1,0 +1,5 @@
+[core]
+    remote = spaces
+['remote "spaces"']
+    url = s3://retsinfomodel
+    credentialpath = /home/golisto/.aws/credentials 
